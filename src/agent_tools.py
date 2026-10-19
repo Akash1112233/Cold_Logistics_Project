@@ -19,6 +19,24 @@ load_dotenv(dotenv_path=project_root / ".env")
 
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 
+def get_cached_huggingface_embeddings(model_name: str):
+    """
+    Loads and locks the HuggingFace model weights into the machine's global RAM.
+    If called again during any subsequent script rerun, it returns instantly.
+    """
+    import streamlit as st
+    
+    # We wrap the inner call with st.cache_resource dynamically 
+    @st.cache_resource(show_spinner=False)
+    def _load_model(name: str):
+        print(f"🧠 MEMORY SEED: Permanently caching local model [{name}] in global RAM...")
+        from langchain_huggingface import HuggingFaceEmbeddings
+        return HuggingFaceEmbeddings(
+            model_name=name,
+            model_kwargs={'device': 'cpu'}
+        )
+    return _load_model(model_name)
+
 
 db_host = os.getenv("SQL_SERVER_HOST", "localhost")
 db_port = os.getenv("SQL_SERVER_PORT", "1433")
