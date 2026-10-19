@@ -67,7 +67,7 @@ else:
         model=local_model_target  # Passes "nomic-embed-text:latest" dynamically
     )
     
-    INDEX_NAME = "fde-sop-index-local"   # Isolated Local Model Index
+    INDEX_NAME = "fde-sop-index-local-v1"   # Isolated Local Model Index
     TARGET_DIMENSION = 768               # Standard vector size for Nomic Embed Text
 
 
